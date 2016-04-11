@@ -29,8 +29,8 @@ class HCService():
         '''
 
         self._HCQueue = queue.Queue(maxdate)
-        self._ListenService = ListenService.ListenService(globals.G_LISTEN_IP, globals.G_LISTEN_PORT, self._HCQueue, maxdate)
-        self._PostService = PostService.PostService(globals.G_HTTPPROXY_IP, globals.G_HTTPPROXY_PORT, self._HCQueue)
+        self._ListenService = ListenService.ListenService(globals.G_LISTEN_HOST, globals.G_LISTEN_PORT, self._HCQueue, maxdate)
+        self._PostService = PostService.PostService(globals.G_HTTPPROXY_HOST, globals.G_HTTPPROXY_PORT, self._HCQueue)
 
     def start(self):
         '''

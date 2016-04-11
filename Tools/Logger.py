@@ -15,7 +15,7 @@
 import logging
 
 
-__all__ = ["OrLog", "getLogger"]
+__all__ = ["OrroLog", "getLogger"]
 
 _Logger = None
 

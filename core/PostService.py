@@ -125,7 +125,7 @@ class PostService():
             worker._isEnable = True
             ret = self.worksmanager('add', worker)
             # LOG LEVEL是DEBUG时，输出运行信息
-            if (globals.G_LOGLEVEL == 'DEBUG'):
+            if (globals.G_LOG_LEVEL == 'DEBUG'):
                 printX('worker add %d' %ret)
         except Exception as e:
             globals.G_Log.error( 'Worker Launch error! [PostService.py:PostService:launchworker] --> %s' %e )
@@ -149,7 +149,7 @@ class PostService():
                     ret = self.worksmanager('del', worker)
                     worker._isEnable = False
                     # LOG LEVEL是DEBUG时，输出运行信息
-                    if (globals.G_LOGLEVEL == 'DEBUG'):
+                    if (globals.G_LOG_LEVEL == 'DEBUG'):
                         printX('worker del %d' %ret)
                 except:
                     # tunnel worker delete error
