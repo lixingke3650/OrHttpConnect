@@ -21,6 +21,8 @@ class HCService():
     _ListenService = None
     # 通信服务
     _PostService = None
+    # 通信列表
+    _WorkList = []
 
     def __init__ (self, maxdate=globals.G_LISTEN_CONNECT_MAXNUMBER):
         '''
@@ -30,7 +32,7 @@ class HCService():
 
         self._HCQueue = queue.Queue(maxdate)
         self._ListenService = ListenService.ListenService(globals.G_LISTEN_HOST, globals.G_LISTEN_PORT, self._HCQueue, maxdate)
-        self._PostService = PostService.PostService(globals.G_HTTPPROXY_HOST, globals.G_HTTPPROXY_PORT, self._HCQueue)
+        self._PostService = PostService.PostService(globals.G_HTTPPROXY_HOST, globals.G_HTTPPROXY_PORT, self._HCQueue, self._WorkList)
 
     def start(self):
         '''

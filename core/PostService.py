@@ -8,7 +8,7 @@ import threading
 
 # org
 from . import globals
-# from Tool import *
+from Tools import *
 # from . import ListenService
 
 
@@ -30,13 +30,14 @@ class PostService():
     _HCWorkThreadRLock = None
 
 
-    def __init__(self, ip, port, hcqueue):
+    def __init__(self, ip, port, hcqueue, worklist):
         '''送信服务初始化'''
 
         self._HCQueue = hcqueue
         self._PostAddress = (ip, port)
         self._isRun = False
         self._HCWorkThreadRLock = threading.RLock()
+        self._HCWorks = worklist
 
     def start(self):
         '''数据发送服务启动'''
@@ -77,7 +78,12 @@ class PostService():
         if (worker._IsConnect != False):
             return False
         try:
-            worker._HttpProxy_HC_Socket.send(globals.G_CONNECT_REQUEST.encode('utf8'))
+            if (globals.G_HTTPPROXY_AUTH == 1):
+                # 验证proxy登录信息
+                worker._HttpProxy_HC_Socket.send(globals.G_CONNECT_REQUEST_SIGN.encode('utf8'))
+            else :
+                # 不验证proxy登录信息
+                worker._HttpProxy_HC_Socket.send(globals.G_CONNECT_REQUEST.encode('utf8'))
             resbytes = worker._HttpProxy_HC_Socket.recv( 128 )
             resstr = resbytes.decode('utf8')
             globals.G_Log.debug(resstr)
@@ -122,11 +128,11 @@ class PostService():
             worker._SToCThread = stocthread
             ctosthread.start()
             stocthread.start()
-            worker._isEnable = True
+            worker._IsEnable = True
             ret = self.worksmanager('add', worker)
             # LOG LEVEL是DEBUG时，输出运行信息
             if (globals.G_LOG_LEVEL == 'DEBUG'):
-                printX('worker add %d' %ret)
+                IO.printX('worker add %d' %ret)
         except Exception as e:
             globals.G_Log.error( 'Worker Launch error! [PostService.py:PostService:launchworker] --> %s' %e )
 
@@ -136,7 +142,7 @@ class PostService():
 
         globals.G_Log.debug('abolishworker! [PostService.py:PostService:abolishworker]')
         try:
-            if (worker._isEnable == True):
+            if (worker._IsEnable == True):
                 if (worker._HttpProxy_HC_Socket != None):
                     worker._HttpProxy_HC_Socket.shutdown( socket.SHUT_RDWR )
                     worker._HttpProxy_HC_Socket.close()
@@ -147,10 +153,10 @@ class PostService():
                     worker._HC_App_Socket = None
                 try:
                     ret = self.worksmanager('del', worker)
-                    worker._isEnable = False
+                    worker._IsEnable = False
                     # LOG LEVEL是DEBUG时，输出运行信息
                     if (globals.G_LOG_LEVEL == 'DEBUG'):
-                        printX('worker del %d' %ret)
+                        IO.printX('worker del %d' %ret)
                 except:
                     # tunnel worker delete error
                     # 可能存在多重删除的情况，输出DEBUG日志

@@ -9,9 +9,10 @@ from Tools import *
 from core import *
 
 # 版本说明
-# 0.01： 新建 基本功能实现
-# 0.02： 追加配置文件功能，追加控制台信息输出(启动信息等)
-__Version__ = '0.02'
+# 0.01： 新建 基本功能实现 (2016.03.31)
+# 0.02： 追加配置文件功能，追加控制台信息输出(启动信息等) (2016.04.11)
+# 0.03: 追加 HTTP Proxy 登陆验证, 追加work管理 (2016.04.13)
+__Version__ = '0.03'
 
 
 _OrHttpConnectService = None
@@ -35,6 +36,12 @@ def loadConfig():
 def globalsInit():
     globals.G_Log = Logger.getLogger(globals.G_LOG_NAME)
     globals.G_Log.setLevel(globals.G_LOG_LEVEL)
+    # HTTP Proxy Connect请求生成
+    globals.G_CONNECT_REQUEST = 'CONNECT ' + globals.G_TARGET_HOST + ':' + str(globals.G_TARGET_PORT) + \
+                        ' HTTP/1.1\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nContent-Length: 0\r\n\r\n'
+    globals.G_CONNECT_REQUEST_SIGN = 'CONNECT ' + globals.G_TARGET_HOST + ':' + str(globals.G_TARGET_PORT) + \
+                        ' HTTP/1.1\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nProxy-Authorization: Basic ' + \
+                        Coding.Base64.enBase64_s2s(globals.G_HTTPPROXY_ID + globals.G_HTTPPROXY_PW) + '\r\nContent-Length: 0\r\n\r\n'
 
 def stop():
     global _OrHttpConnectService
@@ -79,10 +86,21 @@ def main():
     IO.printX('* Log Level: %s' % globals.G_Log.getLevel())
     IO.printX('============================================================')
     IO.printX('')
-    IO.printX('init():  ' + str(initret))
+
+    if (initret == True):
+        IO.printX('init: Succeed.')
+    else :
+        IO.printX('init: Failed!')
+        return False
 
     startret = start()
-    IO.printX ('start(): ' + str(startret))
+    if (startret == True):
+        IO.printX ('start: Succeed.')
+    else :
+        IO.printX('start: Failed!')
+        return False
+
+    IO.printX('OrHttpConnect Service Started.')
 
     # ret = stop()
     # IO.printX ('stop: ' + str(ret))

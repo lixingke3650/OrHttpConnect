@@ -31,7 +31,9 @@ G_HTTPPROXY_ID = 'lixingke3650'
 # HTTP Proxy 密码
 G_HTTPPROXY_PW = 'password'
 # CONNECT请求用字符串
-G_CONNECT_REQUEST = 'CONNECT ' + G_TARGET_HOST + ':' + str(G_TARGET_PORT) + ' HTTP/1.1\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nContent-Length: 0\r\n\r\n'
+# CONNECT lixingke3650.info.tm:80 HTTP/1.1\r\nHost: lixingke3650.info.tm\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nProxy-Authorization: Basic *\r\nContent-Length: 0\r\n\r\n
+G_CONNECT_REQUEST = ''
+G_CONNECT_REQUEST_SIGN = ''
 # CONNECT 成功应答特征字符串
 G_CONNECT_RESPONSE_OK = '200 Connection established' # HTTP/1.0 200 Connection established
 # CONNECT 权限验证失败特征字符串
