@@ -5,6 +5,7 @@
 # std
 import base64
 
+__all__ = ["Base64"]
 
 class Base64():
     '''BASE64编解码'''

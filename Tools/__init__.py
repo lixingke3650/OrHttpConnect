@@ -1,8 +1,8 @@
 # import IO
 # from IO import *
-from . import IO
-from . import Logger
-from . import Config
-from . import Coding
+import Tools.IO
+import Tools.Logger
+import Tools.Config
+import Tools.Coding
 
 # from IO import *

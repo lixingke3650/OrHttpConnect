@@ -2,6 +2,16 @@
 # -*- coding: utf-8 -*-
 # Filename: globals.py
 
+__all__ = [ \
+    'G_Log', 'G_LOG_NAME', 'G_LOG_LEVEL', 'G_HTTPPROXY_HOST', \
+    'G_SOCKET_RECV_MAXSIZE', 'G_TARGET_HOST', 'G_TARGET_PORT', \
+    'G_LISTEN_HOST', 'G_LISTEN_PORT', 'G_LISTEN_CONNECT_MAXNUMBER', \
+    'G_HTTPPROXY_HOST', 'G_HTTPPROXY_PORT', 'G_HTTPPROXY_AUTH', \
+    'G_HTTPPROXY_ID', 'G_HTTPPROXY_PW', 'G_CONNECT_REQUEST', \
+    'G_CONNECT_REQUEST_SIGN', 'G_CONNECT_RESPONSE_OK', \
+    'G_CONNECT_RESPONSE_UNAUTHORIZED' \
+]
+
 # logger
 G_Log = None
 # log 文件名

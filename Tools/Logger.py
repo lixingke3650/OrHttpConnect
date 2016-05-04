@@ -17,6 +17,7 @@ import logging
 
 __all__ = ["OrroLog", "getLogger"]
 
+
 _Logger = None
 
 class OrLog(object):

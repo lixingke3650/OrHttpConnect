@@ -12,7 +12,8 @@ from core import *
 # 0.01： 新建 基本功能实现 (2016.03.31)
 # 0.02： 追加配置文件功能，追加控制台信息输出(启动信息等) (2016.04.11)
 # 0.03: 追加 HTTP Proxy 登陆验证, 追加work管理 (2016.04.13)
-__Version__ = '0.03'
+# 0.04: HTTP Proxy 登陆验证修正, import方式变更 (2016.04.26)
+__Version__ = '0.04'
 
 
 _OrHttpConnectService = None
@@ -41,7 +42,7 @@ def globalsInit():
                         ' HTTP/1.1\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nContent-Length: 0\r\n\r\n'
     globals.G_CONNECT_REQUEST_SIGN = 'CONNECT ' + globals.G_TARGET_HOST + ':' + str(globals.G_TARGET_PORT) + \
                         ' HTTP/1.1\r\nProxy-Connection: Keep-Alive\r\nConnection: keep-alive\r\nProxy-Authorization: Basic ' + \
-                        Coding.Base64.enBase64_s2s(globals.G_HTTPPROXY_ID + globals.G_HTTPPROXY_PW) + '\r\nContent-Length: 0\r\n\r\n'
+                        Coding.Base64.enBase64_s2s(globals.G_HTTPPROXY_ID + ':' + globals.G_HTTPPROXY_PW) + '\r\nContent-Length: 0\r\n\r\n'
 
 def stop():
     global _OrHttpConnectService
@@ -56,7 +57,7 @@ def stop():
 
 def start():
     global _OrHttpConnectService
-    _OrHttpConnectService = HCService.HCService()
+    _OrHttpConnectService = HCService()
     return _OrHttpConnectService.start()
 
 def init():
@@ -79,6 +80,7 @@ def main():
     if (globals.G_HTTPPROXY_AUTH == 1 and globals.G_LOG_LEVEL == 'DEBUG'):
         IO.printX('* HttpProxy ID: %s' % globals.G_HTTPPROXY_ID)
         IO.printX('* HttpProxy PW: %s' % globals.G_HTTPPROXY_PW)
+        IO.printX('* HttpProxy REQUEST_SIGN: %s' % globals.G_CONNECT_REQUEST_SIGN)
     IO.printX('* Listen Host: %s' % globals.G_LISTEN_HOST)
     IO.printX('* Listen Port: %d' % globals.G_LISTEN_PORT)
     IO.printX('* Target Host: %s' % globals.G_TARGET_HOST)

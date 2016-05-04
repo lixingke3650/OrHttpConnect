@@ -9,7 +9,8 @@ import threading
 # org
 from . import globals
 from Tools import *
-# from . import ListenService
+
+__all__ = ['PostService']
 
 
 class PostService():
@@ -68,7 +69,7 @@ class PostService():
             self._PostThread.join(10)
             return True
         except Exception as e:
-            globals.G_Log.error( 'Listen Service Stop error! [ListenService.py:ListenService:stop] --> %s' %e )
+            globals.G_Log.error( 'Listen Service Stop error! [PostService.py:PostService:stop] --> %s' %e )
             return False
 
     def connecttry(self, worker):

@@ -10,7 +10,9 @@ import queue
 # ORG
 # from Tool import *
 from . import globals
-from . import HCWorker
+from core.HCWorker import *
+
+__all__ = ['ListenService']
 
 class ListenService():
     """ListenService服务
@@ -79,7 +81,7 @@ class ListenService():
         while (self._isRun == True):
             try:
                 sock, address = self._ServiceSocket.accept()
-                hcworker = HCWorker.HCWorker()
+                hcworker = HCWorker()
                 hcworker._HC_App_Socket = sock
                 hcworker._Connect_Request = globals.G_CONNECT_REQUEST
 

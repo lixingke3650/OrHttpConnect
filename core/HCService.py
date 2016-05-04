@@ -7,8 +7,10 @@ import queue
 
 # ORG
 from . import globals
-from . import ListenService
-from . import PostService
+from core.ListenService import *
+from core.PostService import *
+
+__all__ = ['HCService']
 
 class HCService():
     '''
@@ -31,8 +33,8 @@ class HCService():
         '''
 
         self._HCQueue = queue.Queue(maxdate)
-        self._ListenService = ListenService.ListenService(globals.G_LISTEN_HOST, globals.G_LISTEN_PORT, self._HCQueue, maxdate)
-        self._PostService = PostService.PostService(globals.G_HTTPPROXY_HOST, globals.G_HTTPPROXY_PORT, self._HCQueue, self._WorkList)
+        self._ListenService = ListenService(globals.G_LISTEN_HOST, globals.G_LISTEN_PORT, self._HCQueue, maxdate)
+        self._PostService = PostService(globals.G_HTTPPROXY_HOST, globals.G_HTTPPROXY_PORT, self._HCQueue, self._WorkList)
 
     def start(self):
         '''

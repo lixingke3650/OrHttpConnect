@@ -7,6 +7,7 @@
 
 # org
 
+__all__ = ['HCWorker']
 
 class HCWorker():
     '''HttpConnect构造体，
