@@ -60,16 +60,21 @@ class PostService():
 
         globals.G_Log.debug('post stop! [PostService.py:PostService:stop]')
         if (self._isRun == False):
+            globals.G_Log.debug('post stop process end! (isRun False) [PostService.py:PostService:stop]')
             return True
         try:
             self._isRun = False
             # 列表中worker停止
+            if (len(self._HCWorks) <= 0):
+                globals.G_Log.debug('post stop process end! (worker zero) [PostService.py:PostService:stop]')
+                return True
             while worker in self._HCWorks:
                 self.abolishworker(worker)
-            self._PostThread.join(10)
+            self._PostThread.join(5)
+            globals.G_Log.debug('post stop process end! [PostService.py:PostService:stop]')
             return True
         except Exception as e:
-            globals.G_Log.error( 'Listen Service Stop error! [PostService.py:PostService:stop] --> %s' %e )
+            globals.G_Log.error( 'Post Service Stop error! [PostService.py:PostService:stop] --> %s' %e )
             return False
 
     def connecttry(self, worker):
@@ -96,15 +101,18 @@ class PostService():
             globals.G_Log.error( 'Post Service connecttry error! [PostService.py:PostService:connecttry] --> %s' %e )
 
     def postrun(self):
-        '''数据发送(双向)'''
+        '''数据发送(双向)线程启动'''
 
         globals.G_Log.debug('postrun! [PostService.py:PostService:postrun]')
         try:
             while (self._isRun == True):
-                hcworker = self._HCQueue.get()
+                globals.G_Log.debug('wait post worker... [PostService.py:PostService:postrun]')
+                # hcworker = self._HCQueue.get(True, 5) # 5s循环读取队列 queue.get() - stop 用
+                hcworker = self._HCQueue.get(True, None)
+                globals.G_Log.debug('new post worker! [PostService.py:PostService:postrun]')
                 launchthread = threading.Thread( target = self.launchworker, args = (hcworker,) )
                 launchthread.start()
-                
+            globals.G_Log.debug('postrun process end. [PostService.py:PostService:postrun]')
         except Exception as e:
             globals.G_Log.error( 'Post Service run error! [PostService.py:PostService:postrun] --> %s' %e )
 

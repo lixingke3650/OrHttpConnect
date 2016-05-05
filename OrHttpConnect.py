@@ -13,7 +13,8 @@ from core import *
 # 0.02： 追加配置文件功能，追加控制台信息输出(启动信息等) (2016.04.11)
 # 0.03: 追加 HTTP Proxy 登陆验证, 追加work管理 (2016.04.13)
 # 0.04: HTTP Proxy 登陆验证修正, import方式变更 (2016.04.26)
-__Version__ = '0.04'
+# 0.05: 服务stop修正
+__Version__ = '0.05'
 
 
 _OrHttpConnectService = None
@@ -104,8 +105,12 @@ def main():
 
     IO.printX('OrHttpConnect Service Started.')
 
-    # ret = stop()
-    # IO.printX ('stop: ' + str(ret))
+    # stopret = stop()
+    # if (stopret == True):
+    #     IO.printX('stop: Succeed.')
+    # else :
+    #     IO.printX('stop: Failed!')
+    #     return False
 
 if __name__ == '__main__':
     main()

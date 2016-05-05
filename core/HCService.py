@@ -42,7 +42,6 @@ class HCService():
         '''
 
         globals.G_Log.debug('HCService start! [ListenService.py:HCService:start]')
-        self._PostService.start()
 
         if (self._ListenService.start() != True):
             globals.G_Log.error( 'Listen Service Start error! [HCService.py:HCService:start]' )
@@ -59,12 +58,13 @@ class HCService():
         '''
 
         globals.G_Log.debug('HCService stop! [ListenService.py:HCService:stop]')
+        ret = True
+        if (self._PostService.stop() != True):
+            globals.G_Log.error( 'Post Service Stop error! [HCService.py:HCService:stop]' )
+            ret = ret and False
         if (self._ListenService.stop() != True):
             globals.G_Log.error( 'Listen Service Stop error! [HCService.py:HCService:stop]' )
-            return False
-        elif (self._PostService.stop() != True):
-            globals.G_Log.error( 'Post Service Stop error! [HCService.py:HCService:stop]' )
-            return False
+            ret = ret and False
 
-        return True
+        return ret
 

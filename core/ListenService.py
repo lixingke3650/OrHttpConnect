@@ -68,7 +68,8 @@ class ListenService():
             self._ServiceSocket.close()
             self._ServiceSocket = None
             self._isRun = False
-            self._GeneratorThread.jion(10)
+            self._GeneratorThread.join(5)
+            globals.G_Log.debug('listen stop process end! [ListenService.py:ListenService:stop]')
             return True
         except Exception as e:
             globals.G_Log.error( 'Listen Service Stop error! [ListenService.py:ListenService:stop] --> %s' %e )
@@ -92,3 +93,5 @@ class ListenService():
                 self._HCQueue.put(hcworker)
             except Exception as e:
                 globals.G_Log.error( 'listen generator error! [ListenService.py:ListenService:generator] --> %s' %e )
+
+        globals.G_Log.debug('listen generator end! [ListenService.py:ListenService:generator]')
