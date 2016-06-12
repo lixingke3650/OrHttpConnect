@@ -13,8 +13,9 @@ from core import *
 # 0.02： 追加配置文件功能，追加控制台信息输出(启动信息等) (2016.04.11)
 # 0.03: 追加 HTTP Proxy 登陆验证, 追加work管理 (2016.04.13)
 # 0.04: HTTP Proxy 登陆验证修正, import方式变更 (2016.04.26)
-# 0.05: 服务stop修正
-__Version__ = '0.05'
+# 0.05: 服务stop修正 (2016.05.16)
+# 0.06: 代理服务器链接测试功能追加 (2016.06.12)
+__Version__ = '0.06'
 
 
 _OrHttpConnectService = None
@@ -49,17 +50,21 @@ def stop():
     global _OrHttpConnectService
     if (_OrHttpConnectService == None):
         return False
-
     if (True == _OrHttpConnectService.stop()):
         _OrHttpConnectService = None
         return True
-
     return False
 
 def start():
     global _OrHttpConnectService
     _OrHttpConnectService = HCService()
     return _OrHttpConnectService.start()
+
+def test():
+    global _OrHttpConnectService
+    if (_OrHttpConnectService == None):
+        return False
+    return (_OrHttpConnectService.testproxy())
 
 def init():
     loadConfig()
@@ -104,6 +109,12 @@ def main():
         return False
 
     IO.printX('OrHttpConnect Service Started.')
+
+    testret = test()
+    if (testret == True):
+        IO.printX('Proxy Server Connect: OK.')
+    else :
+        IO.printX('Proxy Server Connect: NG.')
 
     # stopret = stop()
     # if (stopret == True):

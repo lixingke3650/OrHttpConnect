@@ -9,6 +9,7 @@ import threading
 # org
 from . import globals
 from Tools import *
+from core.HCWorker import *
 
 __all__ = ['PostService']
 
@@ -257,3 +258,20 @@ class PostService():
         self._HCWorkThreadRLock.release()
         # 返回当前work总数
         return ret;
+
+    def testproxy(self):
+        '''
+        Proxy Server 连通测试.
+        '''
+
+        globals.G_Log.debug('testproxy [PostService.py:PostService:testproxy]')
+        try:
+            testworker = HCWorker()
+            testworker._Connect_Request = globals.G_CONNECT_REQUEST
+            sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+            sock.connect( self._PostAddress )
+            testworker._HttpProxy_HC_Socket = sock
+            return self.connecttry(testworker)
+        except Exception as e:
+            globals.G_Log.warn( 'testproxy is error! [PostService.py:PostService:testproxy] --> %s' %e )
+        return False
